@@ -2,7 +2,9 @@ version: 2
 
 models:
   - name: stg_products
-    description: Cleaned product dimension. Sample staging model — follow this pattern for the other sources.
+    description: >
+      Cleaned product dimension (sample). Filters to is_active = true so product_id
+      is unique — one deliberate handling of versioned dimensions.
     columns:
       - name: product_id
         description: Unique product identifier.

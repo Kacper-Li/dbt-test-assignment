@@ -83,13 +83,20 @@ Guidance:
 
 ## Hints (optional — use if stuck)
 
-You do **not** need to find every issue, but the raw data is not perfectly clean. Things worth checking early:
+The raw extract is **intentionally messy**. Cleaning choices change the numbers — document yours and, where material, show sensitivity.
 
+Things worth checking early:
+
+- Duplicate `Transaction ID`s and the `load_batch` / `is_correction` fields
+- Nulls in keys, costs, or dates — drop vs keep vs impute
+- Negative quantities (returns / adjustments)
+- Product / store / region dimensions with more than one row per key (`is_active`)
 - Product names on transactions vs the products dimension
-- Column naming / whitespace inconsistencies
 - Date grain of transactions
 - Stores with unusual size or operating-cost values
 - How you define revenue, gross profit, and contribution after store operating costs
+
+See also the conflicting Finance vs Ops notes in `data/raw/README.md`.
 
 Transaction volume is intentionally capped vs a real retailer.
 

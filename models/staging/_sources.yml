@@ -4,42 +4,51 @@ sources:
   - name: raw
     description: >
       Raw extract of department-store sales data provided as CSV files.
-      These files are loaded directly by DuckDB (no seed step required).
+      Landing-zone quality: expect duplicates, nulls, and versioned dimensions.
+      Loaded directly by DuckDB (no seed step required).
     meta:
       external_location: "read_csv_auto('data/raw/{name}.csv')"
     tables:
       - name: transactions
-        description: Line-level sales transactions (monthly grain).
+        description: >
+          Sales transaction lines at monthly grain, plus load metadata.
+          Transaction ID is not unique in this extract.
         columns:
           - name: Transaction ID
-            description: Unique transaction identifier.
+            description: Business transaction identifier (may repeat across load batches).
           - name: Product index
-            description: Foreign key to products.Index.
+            description: Foreign key to products.Index (may be null).
           - name: Product Name
             description: Product name as recorded on the transaction (may disagree with the products dimension).
           - name: Store ID
-            description: Foreign key to store_locations.id.
+            description: Foreign key to store_locations.id (may be null).
           - name: quantity
-            description: Units sold on the transaction line.
+            description: Units sold; may be negative for returns/adjustments.
           - name: unit_price
             description: Selling price per unit.
           - name: unit_cost
-            description: Cost per unit.
+            description: Cost per unit (may be null).
           - name: Transaction Date
-            description: Transaction month (stored as the first day of the month).
+            description: Transaction month (first day of month); may be blank.
+          - name: load_batch
+            description: Ingestion batch number (higher = later).
+          - name: is_correction
+            description: Upstream flag marking a restated row (not automatically authoritative).
 
       - name: products
-        description: Product dimension.
+        description: Product dimension (may contain multiple versions per Index).
         columns:
           - name: Index
             description: Product surrogate key.
           - name: Product Name
-            description: Canonical product name.
+            description: Product name for this version.
           - name: Product category
-            description: Product category.
+            description: Product category for this version.
+          - name: is_active
+            description: Whether this dimension version is the active one.
 
       - name: store_locations
-        description: Store / location dimension including demographics and operating costs.
+        description: Store / location dimension (may contain multiple versions per id).
         columns:
           - name: id
             description: Store surrogate key.
@@ -50,10 +59,14 @@ sources:
           - name: Sqft
             description: Store floor area in square feet.
           - name: Direct store operating costs
-            description: Direct store operating costs (grain/cadence is not documented — state your assumption).
+            description: >
+              Direct store operating costs. Cadence is disputed between Finance and FP&A
+              (monthly vs annual) — state your assumption.
+          - name: is_active
+            description: Whether this dimension version is the active one.
 
       - name: regions
-        description: Mapping of US states to commercial regions.
+        description: State → region mapping (may contain multiple versions per state).
         columns:
           - name: State Code
             description: Two-letter state code.
@@ -61,3 +74,5 @@ sources:
             description: State name.
           - name: Region
             description: Commercial region (South, West, Midwest, Northeast).
+          - name: is_active
+            description: Whether this dimension version is the active one.
