@@ -1,0 +1,19 @@
+version: 2
+
+models:
+  - name: stg_products
+    description: Cleaned product dimension. Sample staging model — follow this pattern for the other sources.
+    columns:
+      - name: product_id
+        description: Unique product identifier.
+        tests:
+          - unique
+          - not_null
+      - name: product_name
+        description: Canonical product name from the products catalog.
+        tests:
+          - not_null
+      - name: product_category
+        description: Product category (e.g. Kitchen, Household, Electronics).
+        tests:
+          - not_null

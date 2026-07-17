@@ -1,0 +1,8 @@
+retail_challenge:
+  target: dev
+  outputs:
+    dev:
+      type: duckdb
+      # File is created on first connection (gitignored via *.duckdb)
+      path: "retail.duckdb"
+      threads: 4

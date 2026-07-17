@@ -1,0 +1,63 @@
+version: 2
+
+sources:
+  - name: raw
+    description: >
+      Raw extract of department-store sales data provided as CSV files.
+      These files are loaded directly by DuckDB (no seed step required).
+    meta:
+      external_location: "read_csv_auto('data/raw/{name}.csv')"
+    tables:
+      - name: transactions
+        description: Line-level sales transactions (monthly grain).
+        columns:
+          - name: Transaction ID
+            description: Unique transaction identifier.
+          - name: Product index
+            description: Foreign key to products.Index.
+          - name: Product Name
+            description: Product name as recorded on the transaction (may disagree with the products dimension).
+          - name: Store ID
+            description: Foreign key to store_locations.id.
+          - name: quantity
+            description: Units sold on the transaction line.
+          - name: unit_price
+            description: Selling price per unit.
+          - name: unit_cost
+            description: Cost per unit.
+          - name: Transaction Date
+            description: Transaction month (stored as the first day of the month).
+
+      - name: products
+        description: Product dimension.
+        columns:
+          - name: Index
+            description: Product surrogate key.
+          - name: Product Name
+            description: Canonical product name.
+          - name: Product category
+            description: Product category.
+
+      - name: store_locations
+        description: Store / location dimension including demographics and operating costs.
+        columns:
+          - name: id
+            description: Store surrogate key.
+          - name: name
+            description: Store / city name.
+          - name: state_code
+            description: US state code; joins to regions.State Code.
+          - name: Sqft
+            description: Store floor area in square feet.
+          - name: Direct store operating costs
+            description: Direct store operating costs (grain/cadence is not documented — state your assumption).
+
+      - name: regions
+        description: Mapping of US states to commercial regions.
+        columns:
+          - name: State Code
+            description: Two-letter state code.
+          - name: State
+            description: State name.
+          - name: Region
+            description: Commercial region (South, West, Midwest, Northeast).
