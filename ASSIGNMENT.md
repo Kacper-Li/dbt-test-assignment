@@ -2,7 +2,7 @@
 
 **Timebox:** 2 hours  
 **AI-assisted coding is expected and encouraged** (Cursor, Copilot, ChatGPT, etc.).  
-**What we evaluate:** how you **normalize** messy source data in dbt, make sound modeling/cost decisions, and turn numbers into decisions — not how much you type by hand.
+**What we evaluate:** how you **normalize** messy source data in dbt, make sound modeling/cost decisions, explain your pipeline choices, and turn numbers into decisions — not how much you type by hand.
 
 ---
 
@@ -55,18 +55,31 @@ models/
 
 A sample staging model is included as a pattern. Sources are declared in `models/staging/_sources.yml`.
 
-### Part B — Insights for the CEO (secondary)
+### Part B — Presentation (secondary)
 
-Using your **marts**, produce a **short PowerPoint** (`.pptx`) that answers the five questions above.
+Produce a **short PowerPoint** (`.pptx`) you will walk through in the debrief. The deck must cover **both**:
 
-Guidance:
+1. **Your data transformation pipeline** — what you built and why  
+2. **Insights for the CEO** — answers to the five questions above (using your marts)
 
-- Aim for roughly **5–10 slides**
-- Lead with insights and recommended actions
+#### Pipeline section (required)
+
+Include enough slides that a technical interviewer can follow your approach, for example:
+
+- High-level DAG / model layers (staging → intermediate → marts)
+- How you normalized the denormalized extract (keys, grains, dims vs fact)
+- Major cleaning / modeling decisions (duplicates, cost columns, `pack_size`, conflicting attributes, returns, orphans, etc.)
+- What you rejected and why (alternate rules you considered)
+- Assumptions, trade-offs, and what you would do with more time
+
+#### Insights section (required)
+
+- Aim for the whole deck to be roughly **8–12 slides** total (pipeline + insights)
+- Lead insights with recommendations; charts/tables should support the narrative
 - Prioritise **correct figures, clear recommendations, and conciseness** over polish
 - State cost / profit definitions and any sensitivity to alternate choices
-- Be ready to present in the debrief
 
+Be ready to present both the pipeline and the business findings in the debrief.
 ---
 
 ## Principles
@@ -96,8 +109,8 @@ Transaction volume is intentionally capped vs a real retailer.
 
 - [ ] Normalized dbt models (dims + fact) + YAML/tests
 - [ ] `uv run dbt build` succeeds
-- [ ] PowerPoint answering the CEO questions (from marts)
-- [ ] Assumptions / trade-offs called out in the deck
+- [ ] PowerPoint that presents **(1)** the transformation pipeline — what you did and why, and **(2)** CEO insights from your marts
+- [ ] Assumptions / trade-offs / alternatives considered called out in the deck
 
 ---
 
