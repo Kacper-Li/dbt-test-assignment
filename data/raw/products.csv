@@ -1,19 +1,19 @@
-Index,Product Name,Product category,is_active
-1,Cookware,Kitchen,True
-3,Table Lamps,Household,True
-5,Bathroom Furniture,Furniture,True
-6,Computers,Electronics,True
-7,Dinnerware,Dining,True
-8,Cocktail Glasses,Dining,True
-9,Baseball,Sports,True
-10,Blankets,Household,True
-12,Dining Furniture,Furniture,True
-18,Basketball,Sports,True
-19,Vanities,Household,True
-25,TV and video,Electronics,True
-26,Candles,Household,True
-38,Wardrobes,Furniture,True
-45,Home Fragrances,Household,True
-47,Audio,Electronics,True
-19,Cosmetics,Household,False
-12,Dining Furniture,Household,False
+Index,Product Name,Product category,pack_size,effective_from,effective_to
+1,Cookware,Kitchen,1,2019-01-01,2099-12-31
+3,Table Lamps,Household,1,2019-01-01,2099-12-31
+5,Bathroom Furniture,Furniture,1,2019-01-01,2099-12-31
+6,Computers,Electronics,1,2019-01-01,2099-12-31
+7,Dinnerware,Dining,2,2019-01-01,2099-12-31
+8,Cocktail Glasses,Dining,2,2019-01-01,2099-12-31
+9,Baseball,Sports,1,2019-01-01,2099-12-31
+10,Blankets,Household,1,2019-01-01,2099-12-31
+12,Dining Furniture,Furniture,1,2019-01-01,2099-12-31
+18,Basketball,Sports,1,2019-01-01,2099-12-31
+19,Vanities,Household,1,2019-01-01,2099-12-31
+25,TV and video,Electronics,1,2019-01-01,2099-12-31
+26,Candles,Household,1,2019-01-01,2099-12-31
+38,Wardrobes,Furniture,1,2019-01-01,2099-12-31
+45,Home Fragrances,Household,1,2019-01-01,2099-12-31
+47,Audio,Electronics,1,2019-01-01,2099-12-31
+19,Cosmetics,Household,1,2020-06-01,2022-12-31
+12,Dining Furniture,Household,1,2022-01-01,2022-12-31

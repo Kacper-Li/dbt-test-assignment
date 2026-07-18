@@ -3,19 +3,22 @@ version: 2
 models:
   - name: stg_products
     description: >
-      Cleaned product dimension (sample). Filters to is_active = true so product_id
-      is unique — one deliberate handling of versioned dimensions.
+      Cleaned product dimension (sample). Picks one version per product_id using
+      earliest effective_from — a deliberate but not unique possible rule when
+      overlapping versions exist. Also exposes pack_size for downstream cost logic.
     columns:
       - name: product_id
-        description: Unique product identifier.
+        description: Unique product identifier after dedupe.
         tests:
           - unique
           - not_null
       - name: product_name
-        description: Canonical product name from the products catalog.
         tests:
           - not_null
       - name: product_category
-        description: Product category (e.g. Kitchen, Household, Electronics).
+        tests:
+          - not_null
+      - name: pack_size
+        description: Units per pack/case. Relevant when interpreting unit_cost grain.
         tests:
           - not_null

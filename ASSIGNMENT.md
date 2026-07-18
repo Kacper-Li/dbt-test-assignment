@@ -87,16 +87,14 @@ The raw extract is **intentionally messy**. Cleaning choices change the numbers 
 
 Things worth checking early:
 
-- Duplicate `Transaction ID`s and the `load_batch` / `is_correction` fields
-- Nulls in keys, costs, or dates — drop vs keep vs impute
-- Negative quantities (returns / adjustments)
-- Product / store / region dimensions with more than one row per key (`is_active`)
-- Product names on transactions vs the products dimension
-- Date grain of transactions
-- Stores with unusual size or operating-cost values
+- More than one place unit cost may live (transactions vs cost reference files)
+- `pack_size` and whether costs are per unit or per pack/case
+- Duplicate keys and overlapping effective dates on dimensions
+- Lineage fields (`source_system`, `ingested_at`) vs economic event dates
+- Negative quantities; null keys/costs/dates
 - How you define revenue, gross profit, and contribution after store operating costs
 
-See also the conflicting Finance vs Ops notes in `data/raw/README.md`.
+See also stakeholder notes in `data/raw/README.md` — they do not all agree.
 
 Transaction volume is intentionally capped vs a real retailer.
 

@@ -1,50 +1,50 @@
-State Code,State,Region,is_active
-AL,Alabama,South,True
-AR,Arkansas,South,True
-AZ,Arizona,West,True
-CA,California,West,True
-CO,Colorado,West,True
-CT,Connecticut,Northeast,True
-DC,District of Columbia,South,True
-DE,Delaware,South,True
-FL,Florida,South,True
-GA,Georgia,South,True
-HI,Hawaii,West,True
-IA,Iowa,Midwest,True
-ID,Idaho,West,True
-IL,Illinois,Midwest,True
-IN,Indiana,Midwest,True
-KS,Kansas,Midwest,True
-KY,Kentucky,South,True
-LA,Louisiana,South,True
-MA,Massachusetts,Northeast,True
-MD,Maryland,South,True
-ME,Maine,Northeast,True
-MI,Michigan,Midwest,True
-MN,Minnesota,Midwest,True
-MO,Missouri,Midwest,True
-MS,Mississippi,South,True
-MT,Montana,West,True
-NC,North Carolina,South,True
-ND,North Dakota,Midwest,True
-NE,Nebraska,Midwest,True
-NH,New Hampshire,Northeast,True
-NJ,New Jersey,Northeast,True
-NM,New Mexico,West,True
-NV,Nevada,West,True
-NY,New York,Northeast,True
-OH,Ohio,Midwest,True
-OK,Oklahoma,South,True
-OR,Oregon,West,True
-PA,Pennsylvania,Northeast,True
-RI,Rhode Island,Northeast,True
-SC,South Carolina,South,True
-SD,South Dakota,Midwest,True
-TN,Tennessee,South,True
-TX,Texas,South,True
-UT,Utah,West,True
-VA,Virginia,South,True
-WA,Washington,West,True
-WI,Wisconsin,Midwest,True
-WY,Wyoming,West,True
-MD,Maryland,Northeast,False
+State Code,State,Region,effective_from,effective_to
+AL,Alabama,South,2019-01-01,2099-12-31
+AR,Arkansas,South,2019-01-01,2099-12-31
+AZ,Arizona,West,2019-01-01,2099-12-31
+CA,California,West,2019-01-01,2099-12-31
+CO,Colorado,West,2019-01-01,2099-12-31
+CT,Connecticut,Northeast,2019-01-01,2099-12-31
+DC,District of Columbia,South,2019-01-01,2099-12-31
+DE,Delaware,South,2019-01-01,2099-12-31
+FL,Florida,South,2019-01-01,2099-12-31
+GA,Georgia,South,2019-01-01,2099-12-31
+HI,Hawaii,West,2019-01-01,2099-12-31
+IA,Iowa,Midwest,2019-01-01,2099-12-31
+ID,Idaho,West,2019-01-01,2099-12-31
+IL,Illinois,Midwest,2019-01-01,2099-12-31
+IN,Indiana,Midwest,2019-01-01,2099-12-31
+KS,Kansas,Midwest,2019-01-01,2099-12-31
+KY,Kentucky,South,2019-01-01,2099-12-31
+LA,Louisiana,South,2019-01-01,2099-12-31
+MA,Massachusetts,Northeast,2019-01-01,2099-12-31
+MD,Maryland,South,2019-01-01,2099-12-31
+ME,Maine,Northeast,2019-01-01,2099-12-31
+MI,Michigan,Midwest,2019-01-01,2099-12-31
+MN,Minnesota,Midwest,2019-01-01,2099-12-31
+MO,Missouri,Midwest,2019-01-01,2099-12-31
+MS,Mississippi,South,2019-01-01,2099-12-31
+MT,Montana,West,2019-01-01,2099-12-31
+NC,North Carolina,South,2019-01-01,2099-12-31
+ND,North Dakota,Midwest,2019-01-01,2099-12-31
+NE,Nebraska,Midwest,2019-01-01,2099-12-31
+NH,New Hampshire,Northeast,2019-01-01,2099-12-31
+NJ,New Jersey,Northeast,2019-01-01,2099-12-31
+NM,New Mexico,West,2019-01-01,2099-12-31
+NV,Nevada,West,2019-01-01,2099-12-31
+NY,New York,Northeast,2019-01-01,2099-12-31
+OH,Ohio,Midwest,2019-01-01,2099-12-31
+OK,Oklahoma,South,2019-01-01,2099-12-31
+OR,Oregon,West,2019-01-01,2099-12-31
+PA,Pennsylvania,Northeast,2019-01-01,2099-12-31
+RI,Rhode Island,Northeast,2019-01-01,2099-12-31
+SC,South Carolina,South,2019-01-01,2099-12-31
+SD,South Dakota,Midwest,2019-01-01,2099-12-31
+TN,Tennessee,South,2019-01-01,2099-12-31
+TX,Texas,South,2019-01-01,2099-12-31
+UT,Utah,West,2019-01-01,2099-12-31
+VA,Virginia,South,2019-01-01,2099-12-31
+WA,Washington,West,2019-01-01,2099-12-31
+WI,Wisconsin,Midwest,2019-01-01,2099-12-31
+WY,Wyoming,West,2019-01-01,2099-12-31
+MD,Maryland,Northeast,2021-01-01,2023-12-31

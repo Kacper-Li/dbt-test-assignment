@@ -10,22 +10,28 @@ renamed as (
         cast("Index" as integer) as product_id,
         cast("Product Name" as varchar) as product_name,
         cast("Product category" as varchar) as product_category,
-        cast(is_active as boolean) as is_active
+        cast(pack_size as integer) as pack_size,
+        cast(effective_from as date) as effective_from,
+        cast(effective_to as date) as effective_to
     from source
 
 ),
 
--- Sample choice: keep the active dimension version only.
--- Duplicate Index rows exist in the raw extract — document your rule if you differ.
-active_only as (
+-- Sample choice: one row per product_id.
+-- Raw products may have overlapping effective ranges — document your rule if you differ.
+deduped as (
 
     select
         product_id,
         product_name,
-        product_category
+        product_category,
+        pack_size
     from renamed
-    where is_active
+    qualify row_number() over (
+        partition by product_id
+        order by effective_from asc, effective_to desc
+    ) = 1
 
 )
 
-select * from active_only
+select * from deduped

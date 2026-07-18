@@ -1,32 +1,31 @@
 # Raw data
 
-CSV extracts provided for this challenge. Treat them as a warehouse landing zone:
-values may be incomplete, duplicated, or versioned.
+Landing-zone CSV extracts. Treat as imperfect warehouse feeds: duplicates, nulls,
+versioned dimensions, and more than one candidate source for unit cost.
 
 | File | Description |
 |------|-------------|
-| `transactions.csv` | Sales transaction lines (plus load metadata) |
-| `products.csv` | Product catalog (may contain multiple versions per key) |
-| `store_locations.csv` | Store attributes & demographics |
-| `regions.csv` | State → region mapping |
+| `transactions.csv` | Sales lines + lineage (`source_system`, `ingested_at`) |
+| `products.csv` | Product attributes (`pack_size`, effective dates) |
+| `store_locations.csv` | Store attributes + opex (effective dates) |
+| `regions.csv` | State → region (effective dates) |
+| `product_unit_costs.csv` | Effective-dated unit costs by product (`cost_set`) |
 
-## Column notes (transactions)
+## Notes
 
-| Column | Notes |
-|--------|--------|
-| `Transaction ID` | Business key — **not guaranteed unique** in the extract |
-| `load_batch` | Ingestion batch number (higher = later load) |
-| `is_correction` | Upstream flag indicating a restated row |
-| `quantity` | May be negative (returns / adjustments) |
-| `unit_cost` | May be null |
+- `Transaction ID` is **not** unique in the extract.
+- `quantity` may be negative (returns / adjustments).
+- `pack_size` indicates units per pack/case — confirm whether `unit_cost` on a row is per unit or per pack before multiplying.
+- Dimensions may have **overlapping** `effective_from` / `effective_to` ranges for the same key.
+- Unit cost appears both on transactions and in `product_unit_costs.csv` with more than one `cost_set`.
 
-## Guidance from stakeholders (unreconciled)
+## Stakeholder notes (unreconciled)
 
-You may hear conflicting preferences from the business — **choose deliberately and document**:
+Choose deliberately and document:
 
-- **Finance:** “For margin reporting, drop incomplete cost rows and always use the latest `load_batch`. Corrections supersede originals.”
-- **Ops / Sales ops:** “Never drop sales lines. Prefer the original batch unless Finance has formally approved a correction. Allocate missing cost from product medians if needed.”
-- **Finance (store P&L):** “Treat `Direct store operating costs` as a **monthly** fixed cost.”
-- **FP&A:** “Those operating costs look **annual** in our budget files — allocate across months.”
+- **Finance planning:** “Use `cost_set = standard` from the cost table for margin. Transaction costs are noisy.”
+- **AP / Ops:** “`landed` in the cost table is what we actually paid. POS often restates costs after the fact.”
+- **Sales ops:** “Never drop sales lines; prefer the latest `ingested_at` when IDs collide.”
+- **FP&A:** “Store operating costs are annual.” / **Store Finance:** “They’re monthly.”
 
 Do not edit these files. Clean and transform them in dbt models.

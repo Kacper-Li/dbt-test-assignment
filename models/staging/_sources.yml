@@ -3,76 +3,81 @@ version: 2
 sources:
   - name: raw
     description: >
-      Raw extract of department-store sales data provided as CSV files.
-      Landing-zone quality: expect duplicates, nulls, and versioned dimensions.
-      Loaded directly by DuckDB (no seed step required).
+      Landing-zone extracts for department-store sales. Expect duplicates, nulls,
+      versioned dimensions, and more than one place costs may live.
     meta:
       external_location: "read_csv_auto('data/raw/{name}.csv')"
     tables:
       - name: transactions
         description: >
-          Sales transaction lines at monthly grain, plus load metadata.
+          Sales lines at monthly grain, plus lineage metadata.
           Transaction ID is not unique in this extract.
         columns:
           - name: Transaction ID
-            description: Business transaction identifier (may repeat across load batches).
+            description: Business transaction identifier (may repeat).
           - name: Product index
             description: Foreign key to products.Index (may be null).
           - name: Product Name
-            description: Product name as recorded on the transaction (may disagree with the products dimension).
+            description: Name as recorded on the transaction.
           - name: Store ID
             description: Foreign key to store_locations.id (may be null).
           - name: quantity
-            description: Units sold; may be negative for returns/adjustments.
+            description: Units; may be negative (returns / adjustments).
           - name: unit_price
             description: Selling price per unit.
           - name: unit_cost
-            description: Cost per unit (may be null).
+            description: Cost amount on the transaction (grain may relate to pack_size).
+          - name: pack_size
+            description: Units per pack/case associated with the line.
           - name: Transaction Date
-            description: Transaction month (first day of month); may be blank.
-          - name: load_batch
-            description: Ingestion batch number (higher = later).
-          - name: is_correction
-            description: Upstream flag marking a restated row (not automatically authoritative).
+            description: Month-start date; may be blank.
+          - name: source_system
+            description: Upstream system label (e.g. POS, ERP, Manual).
+          - name: ingested_at
+            description: When the row was ingested (not necessarily when the sale occurred).
 
       - name: products
-        description: Product dimension (may contain multiple versions per Index).
+        description: Product dimension with effective dating (versions may overlap).
         columns:
           - name: Index
-            description: Product surrogate key.
+            description: Product key.
           - name: Product Name
-            description: Product name for this version.
           - name: Product category
-            description: Product category for this version.
-          - name: is_active
-            description: Whether this dimension version is the active one.
+          - name: pack_size
+          - name: effective_from
+          - name: effective_to
 
       - name: store_locations
-        description: Store / location dimension (may contain multiple versions per id).
+        description: Store dimension with effective dating (versions may overlap).
         columns:
           - name: id
-            description: Store surrogate key.
           - name: name
-            description: Store / city name.
           - name: state_code
-            description: US state code; joins to regions.State Code.
           - name: Sqft
-            description: Store floor area in square feet.
           - name: Direct store operating costs
-            description: >
-              Direct store operating costs. Cadence is disputed between Finance and FP&A
-              (monthly vs annual) — state your assumption.
-          - name: is_active
-            description: Whether this dimension version is the active one.
+            description: Store opex; monthly vs annual cadence is undocumented — state your assumption.
+          - name: effective_from
+          - name: effective_to
 
       - name: regions
-        description: State → region mapping (may contain multiple versions per state).
+        description: State → region map with effective dating (versions may overlap).
         columns:
           - name: State Code
-            description: Two-letter state code.
           - name: State
-            description: State name.
           - name: Region
-            description: Commercial region (South, West, Midwest, Northeast).
-          - name: is_active
-            description: Whether this dimension version is the active one.
+          - name: effective_from
+          - name: effective_to
+
+      - name: product_unit_costs
+        description: >
+          Effective-dated unit costs by product. Multiple cost_set values may
+          overlap for the same product and period — choose deliberately.
+        columns:
+          - name: product_id
+          - name: effective_from
+          - name: effective_to
+          - name: unit_cost
+          - name: cost_set
+            description: Cost version label (e.g. standard, landed).
+          - name: pack_size
+          - name: notes
