@@ -2,7 +2,7 @@
 
 **Timebox:** 2 hours  
 **AI-assisted coding is expected and encouraged** (Cursor, Copilot, ChatGPT, etc.).  
-**What we evaluate:** how you structure a dbt project, clean messy source data, model for analytics, and turn numbers into decisions — not how much you type by hand.
+**What we evaluate:** how you **normalize** messy source data in dbt, make sound modeling/cost decisions, and turn numbers into decisions — not how much you type by hand.
 
 ---
 
@@ -20,7 +20,8 @@ They care especially about:
 4. What could the business do to grow profit?
 5. Are there any issues that require further investigation?
 
-Raw extracts live in `data/raw/` (CSV files derived from an Excel workbook). A dbt + DuckDB project skeleton is already set up for you — see `README.md` for environment setup.
+You receive a **single denormalized extract**: `data/raw/consolidated_transactions.csv`.  
+A dbt + DuckDB project skeleton is already set up — see `README.md` for environment setup.
 
 ---
 
@@ -28,73 +29,64 @@ Raw extracts live in `data/raw/` (CSV files derived from an Excel workbook). A d
 
 ### Part A — dbt pipeline (primary focus)
 
-Build a dbt pipeline on DuckDB that **cleans, joins, and models** the raw data into analytics-ready tables.
+The landing file is wide and messy on purpose. Your job is to **normalize** it into analytics-ready models.
 
 Minimum expectations:
 
-1. **Staging models** for each source (`transactions`, `products`, `store_locations`, `regions`)
-   - Rename columns to clean snake_case
-   - Cast types appropriately
-   - Document and handle data-quality issues you find (do not silently drop them without explanation)
-2. **Joined / intermediate models** that combine transactions with product, store, and region attributes
-3. **Mart models** that a BI tool or analyst could query to answer the CEO questions (you choose grain and metrics — justify briefly)
-4. **Tests** on key assumptions (e.g. uniqueness, not-null, accepted values, referential integrity)
-5. A project that runs successfully with:
+1. **Staging** from `consolidated_transactions`
+   - Rename to snake_case, cast types
+   - Document and handle data-quality issues (do not silently drop without explanation)
+2. **Normalize** into dimension + fact style models (names flexible), at least:
+   - A **product** dimension (unique product key)
+   - A **store** dimension (unique store key, with region)
+   - A **sales fact** at a clear, documented grain
+3. **Marts** that can answer the CEO questions (build from your normalized models — not by re-aggregating the raw file ad hoc for the deck)
+4. **Tests** on primary keys and relationships
+5. `uv run dbt build` succeeds
 
-```bash
-uv run dbt build
-```
-
-Suggested (not mandatory) layout:
+Suggested layout:
 
 ```text
 models/
-  staging/        # 1:1 with sources, light cleaning
-  intermediate/   # joins / business logic building blocks
-  marts/          # facts / dims or wide analytics tables
+  staging/        # light cleaning of the consolidated extract
+  intermediate/   # normalization / business logic
+  marts/          # dims + facts (or equivalent)
 ```
 
-Sources are already declared in `models/staging/_sources.yml` and point at the CSVs via DuckDB `read_csv_auto`. A sample staging model (`stg_products`) is included as a pattern to follow.
+A sample staging model is included as a pattern. Sources are declared in `models/staging/_sources.yml`.
 
 ### Part B — Insights for the CEO (secondary)
 
-Using your marts (via `dbt show`, SQL in `analyses/`, a notebook, Excel, or similar), produce a **short PowerPoint presentation** (`.pptx`) that answers the five questions above.
+Using your **marts**, produce a **short PowerPoint** (`.pptx`) that answers the five questions above.
 
 Guidance:
 
-- Aim for roughly **5–10 slides** — enough to tell a clear story, not a full board pack
-- Lead with insights and recommended actions; charts/tables should support the narrative
+- Aim for roughly **5–10 slides**
+- Lead with insights and recommended actions
 - Prioritise **correct figures, clear recommendations, and conciseness** over polish
-- Mock anything you would build with more time and call it out on a slide
-- Be ready to present this deck in the debrief discussion
+- State cost / profit definitions and any sensitivity to alternate choices
+- Be ready to present in the debrief
 
 ---
 
 ## Principles
 
 - Analysis is a means to an end — what should the business *do*?
-- Assume the audience knows the business but not this dataset (CEO / sales leader)
+- Assume the audience knows the business but not this dataset
 - Prefer correct figures over impressive-looking wrong ones
-- State assumptions (especially around cost / profit definitions)
-- If you would pull extra data in the real world, say what and why
-- Open-ended on purpose: go beyond the five questions if you find something valuable
+- Cleaning / cost choices change the answer — document yours
+- Open-ended on purpose: go beyond the five questions if valuable
 
 ---
 
 ## Hints (optional — use if stuck)
 
-The raw extract is **intentionally messy**. Cleaning choices change the numbers — document yours and, where material, show sensitivity.
-
-Things worth checking early:
-
-- More than one place unit cost may live (transactions vs cost reference files)
-- `pack_size` and whether costs are per unit or per pack/case
-- Duplicate keys and overlapping effective dates on dimensions
-- Lineage fields (`source_system`, `ingested_at`) vs economic event dates
-- Negative quantities; null keys/costs/dates
-- How you define revenue, gross profit, and contribution after store operating costs
-
-See also stakeholder notes in `data/raw/README.md` — they do not all agree.
+- The extract repeats product/store/region attributes on every row — they are not always consistent
+- There is more than one cost-related column — choose deliberately for margin
+- Check `pack_size` before multiplying costs
+- `Transaction ID` is not unique; lineage fields (`source_system`, `ingested_at`) may conflict with economic dates
+- Negative quantities and unknown product/store keys appear
+- Stakeholder notes in `data/raw/README.md` do not all agree
 
 Transaction volume is intentionally capped vs a real retailer.
 
@@ -102,14 +94,10 @@ Transaction volume is intentionally capped vs a real retailer.
 
 ## Deliverables checklist
 
-Submit (or push) before the debrief:
-
-- [ ] dbt models + YAML (sources already provided; extend as needed)
+- [ ] Normalized dbt models (dims + fact) + YAML/tests
 - [ ] `uv run dbt build` succeeds
-- [ ] PowerPoint presentation (`.pptx`) addressing the CEO questions
-- [ ] Assumptions / trade-offs / next steps covered in the deck (or a short accompanying note)
-
-Be ready to walk through your modeling choices and one or two insights in a short discussion.
+- [ ] PowerPoint answering the CEO questions (from marts)
+- [ ] Assumptions / trade-offs called out in the deck
 
 ---
 
@@ -117,6 +105,6 @@ Be ready to walk through your modeling choices and one or two insights in a shor
 
 - Production deployment, CI, or cloud warehouses
 - Perfect visual design
-- Replacing the provided package manager / database stack (`uv` + `dbt-duckdb`)
+- Replacing `uv` + `dbt-duckdb`
 
-You may add Python packages with `uv add` if needed for analysis, but the transformation layer should live in dbt SQL.
+You may `uv add` packages for analysis; transformation should live in dbt SQL.

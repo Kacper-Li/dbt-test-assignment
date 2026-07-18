@@ -3,81 +3,31 @@ version: 2
 sources:
   - name: raw
     description: >
-      Landing-zone extracts for department-store sales. Expect duplicates, nulls,
-      versioned dimensions, and more than one place costs may live.
+      Single denormalized landing extract. Normalize into dims/facts in dbt;
+      do not treat this file as the analytical model.
     meta:
       external_location: "read_csv_auto('data/raw/{name}.csv')"
     tables:
-      - name: transactions
+      - name: consolidated_transactions
         description: >
-          Sales lines at monthly grain, plus lineage metadata.
-          Transaction ID is not unique in this extract.
+          Wide sales extract with repeated product/store/region attributes.
+          Transaction ID is not unique; cost columns may disagree.
         columns:
           - name: Transaction ID
-            description: Business transaction identifier (may repeat).
-          - name: Product index
-            description: Foreign key to products.Index (may be null).
-          - name: Product Name
-            description: Name as recorded on the transaction.
-          - name: Store ID
-            description: Foreign key to store_locations.id (may be null).
-          - name: quantity
-            description: Units; may be negative (returns / adjustments).
-          - name: unit_price
-            description: Selling price per unit.
-          - name: unit_cost
-            description: Cost amount on the transaction (grain may relate to pack_size).
-          - name: pack_size
-            description: Units per pack/case associated with the line.
           - name: Transaction Date
-            description: Month-start date; may be blank.
-          - name: source_system
-            description: Upstream system label (e.g. POS, ERP, Manual).
-          - name: ingested_at
-            description: When the row was ingested (not necessarily when the sale occurred).
-
-      - name: products
-        description: Product dimension with effective dating (versions may overlap).
-        columns:
-          - name: Index
-            description: Product key.
-          - name: Product Name
-          - name: Product category
-          - name: pack_size
-          - name: effective_from
-          - name: effective_to
-
-      - name: store_locations
-        description: Store dimension with effective dating (versions may overlap).
-        columns:
-          - name: id
-          - name: name
-          - name: state_code
-          - name: Sqft
-          - name: Direct store operating costs
-            description: Store opex; monthly vs annual cadence is undocumented — state your assumption.
-          - name: effective_from
-          - name: effective_to
-
-      - name: regions
-        description: State → region map with effective dating (versions may overlap).
-        columns:
-          - name: State Code
-          - name: State
-          - name: Region
-          - name: effective_from
-          - name: effective_to
-
-      - name: product_unit_costs
-        description: >
-          Effective-dated unit costs by product. Multiple cost_set values may
-          overlap for the same product and period — choose deliberately.
-        columns:
-          - name: product_id
-          - name: effective_from
-          - name: effective_to
+          - name: quantity
+          - name: unit_price
           - name: unit_cost
-          - name: cost_set
-            description: Cost version label (e.g. standard, landed).
+          - name: standard_unit_cost
+          - name: landed_unit_cost
           - name: pack_size
-          - name: notes
+          - name: Product index
+          - name: Product Name
+          - name: product_name_catalog
+          - name: product_category
+          - name: Store ID
+          - name: store_name
+          - name: state_code
+          - name: region_name
+          - name: source_system
+          - name: ingested_at

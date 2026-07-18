@@ -1,6 +1,6 @@
 # Analytics engineer challenge
 
-Timed take-home for analytics engineer candidates. You will build a **dbt pipeline on DuckDB** to clean and join retail store data, then present insights in a short **PowerPoint** for a CEO audience.
+Timed take-home for analytics engineer candidates. You will **normalize** a denormalized retail extract with **dbt + DuckDB**, then present insights in a short **PowerPoint** for a CEO audience.
 
 **Start here:** [ASSIGNMENT.md](./ASSIGNMENT.md)
 
@@ -36,8 +36,8 @@ export DBT_PROFILES_DIR="$(pwd)"
 uv run dbt parse
 uv run dbt compile
 
-# Explore a source without writing models yet
-uv run dbt show --inline "select * from {{ source('raw', 'products') }}" --limit 5
+# Explore the landing extract
+uv run dbt show --inline "select * from {{ source('raw', 'consolidated_transactions') }}" --limit 5
 
 # Build your project (after you add models)
 uv run dbt build
@@ -51,15 +51,15 @@ DuckDB database file: `retail.duckdb` at the repo root (gitignored).
 ## Project layout
 
 ```text
-ASSIGNMENT.md          # Candidate brief (requirements + scoring intent)
-data/raw/              # Source CSVs — do not edit
-models/staging/        # Put staging models here (_sources.yml provided)
-models/intermediate/   # Joins / business logic
-models/marts/          # Analytics-ready outputs
+ASSIGNMENT.md          # Candidate brief
+data/raw/              # consolidated_transactions.csv — do not edit
+models/staging/        # Start here (_sources.yml + sample staging model)
+models/intermediate/   # Normalization / business logic
+models/marts/          # Dims + facts
 analyses/              # Optional ad-hoc SQL for Part B
-profiles.yml           # Local DuckDB profile
+profiles.yml
 dbt_project.yml
-pyproject.toml         # uv / Python deps (dbt-duckdb)
+pyproject.toml
 ```
 
 ## Stack
@@ -76,6 +76,6 @@ pyproject.toml         # uv / Python deps (dbt-duckdb)
 ./scripts/verify_env.sh
 ```
 
-This checks that dependencies install, dbt can connect, and raw CSV sources are readable.
+This checks that dependencies install, dbt can connect, and the consolidated source is readable.
 
-> Note: until you add models under `staging/`, `intermediate/`, and `marts/`, dbt may warn about unused configuration paths in `dbt_project.yml`. That is expected.
+> Note: until you add models under `intermediate/` and `marts/`, dbt may warn about unused configuration paths in `dbt_project.yml`. That is expected.

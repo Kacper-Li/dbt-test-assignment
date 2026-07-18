@@ -1,0 +1,14 @@
+version: 2
+
+models:
+  - name: stg_consolidated_transactions
+    description: >
+      Sample staging model for the denormalized landing extract.
+      Next step for candidates: normalize into dims + fact (this model alone is not the end state).
+    columns:
+      - name: transaction_id
+        description: Business transaction id (not unique in the raw extract).
+        tests:
+          - not_null
+      - name: quantity
+        description: May be negative for returns.
