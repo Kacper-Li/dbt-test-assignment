@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: mart_top_products
+  - name: dim_products
     description: >
       Product performance mart for identifying the strongest and weakest products by revenue and margin.
     columns:

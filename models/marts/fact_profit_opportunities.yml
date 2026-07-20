@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: mart_profit_opportunities
+  - name: fact_profit_opportunities
     description: >
       Mart for surfacing product-store combinations with the strongest margin opportunities.
     columns:

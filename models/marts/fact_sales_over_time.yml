@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: mart_sales_over_time
+  - name: fact_sales_over_time
     description: >
       Monthly sales mart for monitoring growth over time.
       It summarizes units, revenue, cost, and margin by month.

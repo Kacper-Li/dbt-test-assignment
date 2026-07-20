@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: mart_quality_flags
+  - name: fact_quality_flags
     description: >
       Mart summarizing data quality issues surfaced in the staging and intermediate layers.
     columns:

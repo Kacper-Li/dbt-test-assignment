@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: mart_growth_drivers
+  - name: fact_growth_drivers
     description: >
       Mart for exploring which products and stores contributed most to growth in 2022.
     columns:

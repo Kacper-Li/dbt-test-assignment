@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: mart_top_stores
+  - name: dim_stores
     description: >
       Store performance mart for identifying the strongest and weakest stores by revenue and margin.
     columns:
