@@ -1,0 +1,8 @@
+Metadata-Version: 2.4
+Name: dbt-test-assignment
+Version: 0.1.0
+Summary: Analytics engineer take-home: dbt + DuckDB pipeline on retail store transaction data
+Requires-Python: >=3.12
+Requires-Dist: dbt-duckdb>=1.10.1
+Requires-Dist: ipykernel>=7.3.0
+Requires-Dist: pandas>=3.0.3

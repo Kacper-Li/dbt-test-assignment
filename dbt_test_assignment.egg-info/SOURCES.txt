@@ -1,0 +1,7 @@
+README.md
+pyproject.toml
+dbt_test_assignment.egg-info/PKG-INFO
+dbt_test_assignment.egg-info/SOURCES.txt
+dbt_test_assignment.egg-info/dependency_links.txt
+dbt_test_assignment.egg-info/requires.txt
+dbt_test_assignment.egg-info/top_level.txt
