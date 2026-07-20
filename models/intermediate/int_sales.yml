@@ -1,0 +1,20 @@
+version: 2
+
+models:
+  - name: int_sales
+    description: >
+      Intermediate sales fact model built from the cleaned staging layer.
+      It preserves each sales line and adds simple revenue, cost, and margin measures.
+    columns:
+      - name: transaction_id
+        description: Cleaned transaction identifier from staging.
+      - name: quantity
+        description: Quantity from the staging layer; negative values may represent returns or adjustments.
+      - name: cost_for_margin
+        description: Preferred margin cost derived from the staging model.
+      - name: revenue
+        description: Quantity multiplied by unit price.
+      - name: gross_cost
+        description: Quantity multiplied by the chosen margin cost.
+      - name: gross_margin
+        description: Revenue minus gross cost.

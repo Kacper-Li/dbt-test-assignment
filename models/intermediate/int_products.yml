@@ -1,0 +1,16 @@
+version: 2
+
+models:
+  - name: int_products
+    description: >
+      Intermediate product model built from the cleaned staging layer.
+      It provides a deduplicated product view and a stable product key for downstream marts.
+    columns:
+      - name: product_key
+        description: Surrogate key for products based on product ID when present, otherwise a hash of available product attributes.
+      - name: product_id
+        description: Product identifier from the raw extract when it is valid.
+      - name: product_name
+        description: Preferred product name using the cleaned catalog name where available.
+      - name: product_category
+        description: Product category from the source extract.

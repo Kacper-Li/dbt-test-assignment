@@ -1,0 +1,16 @@
+version: 2
+
+models:
+  - name: int_stores
+    description: >
+      Intermediate store model built from the cleaned staging layer.
+      It provides a deduplicated store view and a stable store key for downstream marts.
+    columns:
+      - name: store_key
+        description: Surrogate key for stores based on store ID when present, otherwise a hash of available store attributes.
+      - name: store_id
+        description: Store identifier from the raw extract when it is valid.
+      - name: store_name
+        description: Store name from the cleaned staging layer.
+      - name: region_name
+        description: Store region from the cleaned staging layer.
