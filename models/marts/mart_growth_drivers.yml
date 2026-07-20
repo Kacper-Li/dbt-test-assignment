@@ -1,0 +1,15 @@
+version: 2
+
+models:
+  - name: mart_growth_drivers
+    description: >
+      Mart for exploring which products and stores contributed most to growth in 2022.
+    columns:
+      - name: transaction_month
+        description: Month of the transaction.
+      - name: product_id
+        description: Product identifier from the intermediate product model.
+      - name: store_id
+        description: Store identifier from the intermediate store model.
+      - name: revenue
+        description: Revenue for the product-store-month combination in 2022.

@@ -1,0 +1,17 @@
+version: 2
+
+models:
+  - name: mart_top_stores
+    description: >
+      Store performance mart for identifying the strongest and weakest stores by revenue and margin.
+    columns:
+      - name: store_id
+        description: Store identifier from the intermediate store model.
+      - name: store_name
+        description: Preferred store name used for reporting.
+      - name: region_name
+        description: Store region used for regional comparisons.
+      - name: revenue
+        description: Sum of revenue across sales rows for the store.
+      - name: gross_margin
+        description: Sum of gross margin across sales rows for the store.

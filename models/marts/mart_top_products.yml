@@ -1,0 +1,15 @@
+version: 2
+
+models:
+  - name: mart_top_products
+    description: >
+      Product performance mart for identifying the strongest and weakest products by revenue and margin.
+    columns:
+      - name: product_id
+        description: Product identifier from the intermediate product model.
+      - name: product_name
+        description: Preferred product name used for reporting.
+      - name: revenue
+        description: Sum of revenue across sales rows for the product.
+      - name: gross_margin
+        description: Sum of gross margin across sales rows for the product.

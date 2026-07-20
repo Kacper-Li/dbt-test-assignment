@@ -1,0 +1,16 @@
+version: 2
+
+models:
+  - name: mart_sales_over_time
+    description: >
+      Monthly sales mart for monitoring growth over time.
+      It summarizes units, revenue, cost, and margin by month.
+    columns:
+      - name: transaction_month
+        description: Month of the transaction.
+      - name: revenue
+        description: Sum of revenue across cleaned sales rows in the month.
+      - name: gross_cost
+        description: Sum of chosen margin cost across cleaned sales rows in the month.
+      - name: gross_margin
+        description: Revenue minus gross cost for the month.

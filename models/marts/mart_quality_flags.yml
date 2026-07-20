@@ -1,0 +1,19 @@
+version: 2
+
+models:
+  - name: mart_quality_flags
+    description: >
+      Mart summarizing data quality issues surfaced in the staging and intermediate layers.
+    columns:
+      - name: is_missing_product_id
+        description: True when the cleaned product ID is missing.
+      - name: is_missing_store_id
+        description: True when the cleaned store ID is missing.
+      - name: is_missing_unit_cost
+        description: True when all cleaned cost fields are missing.
+      - name: has_conflicting_costs
+        description: True when standard and landed costs disagree.
+      - name: is_negative_quantity
+        description: True when quantity is negative.
+      - name: is_duplicate_transaction_id
+        description: True when a transaction ID appears more than once.
