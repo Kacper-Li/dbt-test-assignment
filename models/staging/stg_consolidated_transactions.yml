@@ -3,12 +3,29 @@ version: 2
 models:
   - name: stg_consolidated_transactions
     description: >
-      Sample staging model for the denormalized landing extract.
-      Next step for candidates: normalize into dims + fact (this model alone is not the end state).
+      Staging model for the denormalized sales extract.
+      The model standardizes types, trims text, preserves row-level facts,
+      and adds explicit flags for missing keys and conflicting cost data.
     columns:
       - name: transaction_id
-        description: Business transaction id (not unique in the raw extract).
-        tests:
-          - not_null
+        description: Cleaned transaction identifier where the raw value is a valid integer; null when the raw value is invalid.
+      - name: transaction_date
+        description: Transaction date cast to a date when valid.
       - name: quantity
-        description: May be negative for returns.
+        description: Cleaned quantity; negative values may represent returns or adjustments.
+      - name: cost_for_margin
+        description: Preferred cost column for margin analysis, using standard cost first, then landed cost, then unit cost as fallback.
+      - name: cost_source
+        description: Indicates which cost column supplied the chosen margin cost.
+      - name: is_negative_quantity
+        description: True when the cleaned quantity is negative.
+      - name: is_missing_product_id
+        description: True when the raw product index cannot be converted to a valid integer.
+      - name: is_missing_store_id
+        description: True when the raw store ID cannot be converted to a valid integer.
+      - name: is_missing_unit_cost
+        description: True when all cost columns are null after cleaning.
+      - name: has_conflicting_costs
+        description: True when both standard and landed costs are present but disagree.
+      - name: is_duplicate_transaction_id
+        description: True when the cleaned transaction ID appears more than once in the raw extract.
